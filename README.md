@@ -1,6 +1,8 @@
 # summer_student_project
 
 ## Recipe
+
+```
 cmsrel CMSSW_12_3_0
 
 cd CMSSW_12_3_0/src/
@@ -14,3 +16,4 @@ cd summerStudentProject_Ahmed/RPC2TMAna
 scram b -j 8
 
 cmsRun python/ConfFile_cfg.py
+```
