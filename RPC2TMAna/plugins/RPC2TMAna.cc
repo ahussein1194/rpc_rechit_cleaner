@@ -47,7 +47,12 @@
 // Header files for TFileService.
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
+
+// Header file for ROOT histogramming.
 #include "TH1.h"
+
+// Header Files for the algo.
+#include "L1Trigger/L1TTwinMux/interface/RPCHitCleaner.h"
 
 //
 // class declaration
@@ -168,6 +173,17 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   if (debug) std::cout << "container size TwinMuxTheta = " << v_TwinMuxTheta->size() << std::endl;
   hist_thetaSize->Fill(v_TwinMuxTheta->size());
 
+
+// Taken from RPCHitCleaner.cc
+
+RPCDigiCollection m_inrpcDigis = digiCollectionRPCTwinMux;
+
+for(auto hit = m_inrpcDigis.begin(); hit != m_inrpcDigis.end(); ++hit) {
+  RPCDetId rpcDetId = (*hit).first;
+  std::cout << "Region is: " << rpcDetId.region() << std::endl;
+}
+
+
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
   // if the SetupData is always needed
   auto setup = iSetup.getData(setupToken_);
@@ -194,10 +210,10 @@ void RPC2TMAna::endJob() {
   // please remove this method if not needed
 
   // Check overflows
-  std::cout << "\n\n\n\n";
-  std::cout << "#overflows in phi_in = " << hist_phiInSize->GetBinContent(hist_phiInSize->GetNbinsX() + 1) << std::endl;
-  std::cout << "#overflows in phi_out = " << hist_phiOutSize->GetBinContent(hist_phiOutSize->GetNbinsX() + 1) << std::endl;
-  std::cout << "#overflows in theta = " << hist_thetaSize->GetBinContent(hist_thetaSize->GetNbinsX() + 1) << std::endl;
+  //std::cout << "\n\n\n\n";
+  //std::cout << "#overflows in phi_in = " << hist_phiInSize->GetBinContent(hist_phiInSize->GetNbinsX() + 1) << std::endl;
+  //std::cout << "#overflows in phi_out = " << hist_phiOutSize->GetBinContent(hist_phiOutSize->GetNbinsX() + 1) << std::endl;
+  //std::cout << "#overflows in theta = " << hist_thetaSize->GetBinContent(hist_thetaSize->GetNbinsX() + 1) << std::endl;
 
 }
 
