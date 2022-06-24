@@ -176,7 +176,9 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 // Taken from RPCHitCleaner.cc
 
-MuonDigiCollection m_inrpcDigis = digiCollectionRPCTwinMux;
+//MuonDigiCollection m_inrpcDigis = digiCollectionRPCTwinMux;
+typedef  DigiContainerIterator<RPCDetId, RPCDigi> DigiRangeIterator;
+DigiRangeIterator m_inrpcDigis = digiCollectionRPCTwinMux;
 
 for(auto hit = m_inrpcDigis.begin(); hit != m_inrpcDigis.end(); ++hit) {
   RPCDetId rpcDetId = (*hit).first;
