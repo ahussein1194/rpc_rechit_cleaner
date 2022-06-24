@@ -176,7 +176,7 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 // Taken from RPCHitCleaner.cc
 
-RPCDigiCollection m_inrpcDigis = rpcTwinMuxToken_;
+MuonDigiCollection m_inrpcDigis = rpcTwinMuxToken_;
 
 for(auto hit = m_inrpcDigis.begin(); hit != m_inrpcDigis.end(); ++hit) {
   RPCDetId rpcDetId = (*hit).first;
