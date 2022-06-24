@@ -176,7 +176,7 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 // Taken from RPCHitCleaner.cc
 
-RPCDigiCollection* m_inrpcDigis = digiCollectionRPCTwinMux;
+RPCDigiCollection m_inrpcDigis = digiCollectionRPCTwinMux;
 //typedef  DigiContainerIterator<RPCDetId, RPCDigi> DigiRangeIterator;
 //DigiRangeIterator m_inrpcDigis = digiCollectionRPCTwinMux;
 //std::cout << *digiCollectionRPCTwinMux.first << std::endl;
