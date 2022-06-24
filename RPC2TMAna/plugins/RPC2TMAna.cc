@@ -176,11 +176,11 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 // Taken from RPCHitCleaner.cc
 
-//MuonDigiCollection m_inrpcDigis = digiCollectionRPCTwinMux;
-typedef  DigiContainerIterator<RPCDetId, RPCDigi> DigiRangeIterator;
+RPCDigiCollection* m_inrpcDigis = digiCollectionRPCTwinMux;
+//typedef  DigiContainerIterator<RPCDetId, RPCDigi> DigiRangeIterator;
 //DigiRangeIterator m_inrpcDigis = digiCollectionRPCTwinMux;
 //std::cout << *digiCollectionRPCTwinMux.first << std::endl;
-for(DigiRangeIterator hit = digiCollectionRPCTwinMux->begin(); hit != digiCollectionRPCTwinMux->end(); ++hit) {
+for(hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
   RPCDetId rpcDetId = (*hit).first;
   std::cout << "Region is: " << rpcDetId.region() << std::endl;
 }
