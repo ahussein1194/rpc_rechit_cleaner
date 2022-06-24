@@ -179,7 +179,7 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 //MuonDigiCollection m_inrpcDigis = digiCollectionRPCTwinMux;
 //typedef  DigiContainerIterator<RPCDetId, RPCDigi> DigiRangeIterator;
 //DigiRangeIterator m_inrpcDigis = digiCollectionRPCTwinMux;
-std::cout << digiCollectionRPCTwinMux << std::endl;
+std::cout << *digiCollectionRPCTwinMux << std::endl;
 /*for(auto hit = m_inrpcDigis.begin(); hit != m_inrpcDigis.end(); ++hit) {
   RPCDetId rpcDetId = (*hit).first;
   std::cout << "Region is: " << rpcDetId.region() << std::endl;
