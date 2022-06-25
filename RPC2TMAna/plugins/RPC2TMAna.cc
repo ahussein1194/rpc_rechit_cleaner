@@ -186,7 +186,7 @@ edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCTwinMux;
 for(auto hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
   RPCDetId rpcDetId = (*hit).first;
   //std::cout << "Region is: " << rpcDetId.region() << std::endl;
-  region.push_back(rpcDetId.region);
+  region.push_back(rpcDetId.region());
 }
 
 
