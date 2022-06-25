@@ -270,9 +270,9 @@ void RPC2TMAna::beginJob() {
   edm::Service<TFileService> fs;
 
   // Book Histograms.
-  hist_phiInSize = fs->make<TH1D>("phiIn_size", "phiIn_size", 60, -0.5, 59.5); 
+  hist_phiInSize = fs->make<TH1D>("phiIn_size", "phiIn_size", 60, -0.5, 59.5);
   hist_phiOutSize = fs->make<TH1D>("phiOut_size", "phiOut_size", 60, -0.5, 59.5);
-  hist_thetaSize = fs->make<TH1D>("theta_size", "theta_size", 60, -0.5, 59.5);
+  hist_thetaSize = fs->make<TH1D>("theta_size", "theta_size", 50, -0.5, 49.5);
   hist_clusterSize_RPCTwinMux = fs->make<TH1D>("clusterSize_RPCTwinMux", "clusterSize_RPCTwinMux", 60, -0.5, 59.5);
 
 }
@@ -282,10 +282,10 @@ void RPC2TMAna::endJob() {
   // please remove this method if not needed
 
   // Check overflows
-  //std::cout << "\n\n\n\n";
-  //std::cout << "#overflows in phi_in = " << hist_phiInSize->GetBinContent(hist_phiInSize->GetNbinsX() + 1) << std::endl;
-  //std::cout << "#overflows in phi_out = " << hist_phiOutSize->GetBinContent(hist_phiOutSize->GetNbinsX() + 1) << std::endl;
-  //std::cout << "#overflows in theta = " << hist_thetaSize->GetBinContent(hist_thetaSize->GetNbinsX() + 1) << std::endl;
+  std::cout << "\n\n\n\n";
+  std::cout << "#overflows in phi_in = " << hist_phiInSize->GetBinContent(hist_phiInSize->GetNbinsX() + 1) << std::endl;
+  std::cout << "#overflows in phi_out = " << hist_phiOutSize->GetBinContent(hist_phiOutSize->GetNbinsX() + 1) << std::endl;
+  std::cout << "#overflows in theta = " << hist_thetaSize->GetBinContent(hist_thetaSize->GetNbinsX() + 1) << std::endl;
   std::cout << "#overflows in hist_clusterSize_RPCTwinMux = " << hist_clusterSize_RPCTwinMux->GetBinContent(hist_clusterSize_RPCTwinMux->GetNbinsX() + 1) << std::endl;
 
   // Print the region vector.
