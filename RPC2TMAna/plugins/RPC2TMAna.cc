@@ -180,10 +180,10 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 typedef  DigiContainerIterator<RPCDetId, RPCDigi> DigiRangeIterator;
 edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCTwinMux;
 //std::cout << *m_inrpcDigis << std::endl;
-/*for(auto hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
+for(auto hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
   RPCDetId rpcDetId = (*hit).first;
   std::cout << "Region is: " << rpcDetId.region() << std::endl;
-}*/
+}
 
 
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
