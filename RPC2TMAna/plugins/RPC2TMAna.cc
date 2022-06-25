@@ -190,18 +190,18 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCLegacy;
 // digiCollectionRPCLegacy is our RPCDigiCollection<RPCDetId, RPCDigi>
 
-// Loop through the hits.
-for(auto hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
+// Loop through the chmabers. RPCDetId specifies a chamber.
+for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++chamber) {
   //region_v.push_back(rpcDetId.region());
-  RPCDetId rpcDetId = (*hit).first;
+  RPCDetId rpcDetId = (*chamber).first;
   int strip_n1 = -10000; //???
   int bx_n1 = -10000; //???
 
   // Select Barrel hits only.
   if(rpcDetId.region() != 0) continue;
 
-  // Loop through the digis.
-  for(auto digi = (*hit).second.first; digi != (*hit).second.second; ++digi) {
+  // Loop through the digis in a specific chamber.
+  for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
     // (*hit.second.first) is our digi iterator and (*hit.second.second) is the ending one.
     //bx_v.push_back(digi->bx());
     strip_v.push_back(digi->strip());
