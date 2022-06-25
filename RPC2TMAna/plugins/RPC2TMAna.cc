@@ -100,6 +100,9 @@ private:
   // Create a vector to store the bx of each hit.
   std::vector<int> bx_v;
 
+  // Create a vector to store the strip of each hit.
+  std::vector<int> strip_v;
+
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
   edm::ESGetToken<SetupData, SetupRecord> setupToken_;
 #endif
@@ -185,16 +188,23 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 //RPCDigiCollection m_inrpcDigis = digiCollectionRPCTwinMux;
 //typedef  DigiContainerIterator<RPCDetId, RPCDigi> DigiRangeIterator;
 edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCLegacy;
-//std::cout << *m_inrpcDigis << std::endl;
-for(auto hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
-  RPCDetId rpcDetId = (*hit).first;
-  RPCDigi rpcDigi = (*hit).second;
-  region_v.push_back(rpcDetId.region());
-  //bx_v.push_back(rpcDigi.bx());
+// digiCollectionRPCLegacy is our RPCDigiCollection<RPCDetId, RPCDigi>
 
+// Loop through the hits.
+for(auto hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
+  //region_v.push_back(rpcDetId.region());
+  RPCDetId rpcDetId = (*hit).first;
+  int strip_n1 = -10000; //???
+  int bx_n1 = -10000; //???
+
+  // Select Barrel hits only.
+  if(rpcDetId.region != 0) continue;
+
+  // Loop through the digis.
   for(auto digi = (*hit).second.first; digi != (*hit).second.second; ++digi) {
-    //int digi_bx = digi->bx();
-    bx_v.push_back(digi->bx());
+    // (*hit.second.first) is our digi iterator and (*hit.second.second) is the ending one.
+    //bx_v.push_back(digi->bx());
+    strip_v.push_back(digi->strip());
   }
 }
 
@@ -241,6 +251,13 @@ void RPC2TMAna::endJob() {
   // Print the bx vector.
   std::cout << "\n\n\nbx = { ";
   for(int n : bx_v){
+    std::cout << n << ", ";
+  }
+  std::cout << "}; \n";
+
+  // Print the strip vector.
+  std::cout << "\n\n\nstrip = { ";
+  for(int n : strip_v){
     std::cout << n << ", ";
   }
   std::cout << "}; \n";
