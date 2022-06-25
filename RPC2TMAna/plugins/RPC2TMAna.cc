@@ -198,7 +198,7 @@ for(auto hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
   int bx_n1 = -10000; //???
 
   // Select Barrel hits only.
-  if(rpcDetId.region != 0) continue;
+  if(rpcDetId.region() != 0) continue;
 
   // Loop through the digis.
   for(auto digi = (*hit).second.first; digi != (*hit).second.second; ++digi) {
