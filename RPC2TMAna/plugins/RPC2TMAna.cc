@@ -193,8 +193,8 @@ for(auto hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
   //bx_v.push_back(rpcDigi.bx());
 
   for(auto digi = (*hit).second.first; digi != (*hit).second.second; ++digi) {
-    digi_bx = digi->bx();
-    bx_v.push_back(digi_bx);
+    //int digi_bx = digi->bx();
+    bx_v.push_back(digi->bx());
   }
 }
 
