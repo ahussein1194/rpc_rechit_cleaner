@@ -93,6 +93,7 @@ private:
   TH1D* hist_phiInSize;
   TH1D* hist_phiOutSize;
   TH1D* hist_thetaSize;
+  TH1D* hist_clusterSize_RPCTwinMux;
 
   // Create a vector to store the region of each hit.
   std::vector<int> region_v;
@@ -247,6 +248,11 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 } // End of loop over chambers.
 vcluster_size.push_back(cluster_size); // store size of the last cluster.
 
+// Loop through the vcluster_size vector to fill the cluster size for RPCTwinMux clusters.
+for(int clu_size : vcluster_size){
+  hist_clusterSize_RPCTwinMux->Fill(clu_size);
+}
+
 
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
   // if the SetupData is always needed
@@ -267,6 +273,7 @@ void RPC2TMAna::beginJob() {
   hist_phiInSize = fs->make<TH1D>("phiIn_size", "phiIn_size", 60, -0.5, 59.5);  // integer
   hist_phiOutSize = fs->make<TH1D>("phiOut_size", "phiOut_size", 60, -0.5, 59.5);  // integer
   hist_thetaSize = fs->make<TH1D>("theta_size", "theta_size", 60, -0.5, 59.5);  // integer
+  hist_clusterSize_RPCTwinMux = fs->make<TH1D>("clusterSize_RPCTwinMux", "clusterSize_RPCTwinMux", 60, -0.5, 59.5);  // integer
 
 }
 
