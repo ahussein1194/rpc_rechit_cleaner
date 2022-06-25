@@ -272,7 +272,7 @@ void RPC2TMAna::beginJob() {
   // Book Histograms.
   hist_phiInSize = fs->make<TH1D>("phiIn_size", "phiIn_size", 60, -0.5, 59.5);  // integer
   hist_phiOutSize = fs->make<TH1D>("phiOut_size", "phiOut_size", 60, -0.5, 59.5);  // integer
-  hist_thetaSize = fs->make<TH1D>("theta_size", "theta_size", 60, -0.5, 59.5);  // integer
+  hist_thetaSize = fs->make<TH1D>("theta_size", "theta_size", 10, -0.5, 9.5);  // integer
   hist_clusterSize_RPCTwinMux = fs->make<TH1D>("clusterSize_RPCTwinMux", "clusterSize_RPCTwinMux", 60, -0.5, 59.5);  // integer
 
 }

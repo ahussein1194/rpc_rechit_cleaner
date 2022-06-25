@@ -115,7 +115,7 @@ process.demo  = cms.EDAnalyzer('RPC2TMAna',
                               )
 
 # Enable the TFileService.
-process.TFileService = cms.Service("TFileService", fileName = cms.string('hist_collectionSize.root'), closeFileFast = cms.untracked.bool(False))
+process.TFileService = cms.Service("TFileService", fileName = cms.string('hist.root'), closeFileFast = cms.untracked.bool(False))
 
 process.p = cms.Path(process.rpcTwinMuxRawToDigi*process.twinMuxStage2Digis*process.demo)
 
