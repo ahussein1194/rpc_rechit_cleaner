@@ -182,7 +182,8 @@ edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCTwinMux;
 //std::cout << *m_inrpcDigis << std::endl;
 for(auto hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
   RPCDetId rpcDetId = (*hit).first;
-  std::cout << "Region is: " << rpcDetId.region() << std::endl;
+  //std::cout << "Region is: " << rpcDetId.region() << std::endl;
+  region.push_back(rpcDetId.region);
 }
 
 
@@ -205,6 +206,9 @@ void RPC2TMAna::beginJob() {
   hist_phiInSize = fs->make<TH1D>("phiIn_size", "phiIn_size", 60, -0.5, 59.5);  // integer
   hist_phiOutSize = fs->make<TH1D>("phiOut_size", "phiOut_size", 60, -0.5, 59.5);  // integer
   hist_thetaSize = fs->make<TH1D>("theta_size", "theta_size", 60, -0.5, 59.5);  // integer
+
+  // Create a vector to store the region.
+  std::vector<int> region;
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
@@ -216,6 +220,13 @@ void RPC2TMAna::endJob() {
   //std::cout << "#overflows in phi_in = " << hist_phiInSize->GetBinContent(hist_phiInSize->GetNbinsX() + 1) << std::endl;
   //std::cout << "#overflows in phi_out = " << hist_phiOutSize->GetBinContent(hist_phiOutSize->GetNbinsX() + 1) << std::endl;
   //std::cout << "#overflows in theta = " << hist_thetaSize->GetBinContent(hist_thetaSize->GetNbinsX() + 1) << std::endl;
+
+  // Print the region vector.
+  std::cout << "\n\n\nregion = { ";
+  for(int n : v){
+    std::cout << n << ", ";
+  }
+  std::cout << "}; \n";
 
 }
 
