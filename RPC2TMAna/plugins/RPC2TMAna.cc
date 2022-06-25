@@ -94,8 +94,11 @@ private:
   TH1D* hist_phiOutSize;
   TH1D* hist_thetaSize;
 
-  // Create a vector to store the region.
-  std::vector<int> region;
+  // Create a vector to store the region of each hit.
+  std::vector<int> region_v;
+
+  // Create a vector to store the bx of each hit.
+  std::vector<int> bx_v;
 
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
   edm::ESGetToken<SetupData, SetupRecord> setupToken_;
@@ -181,12 +184,13 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 //RPCDigiCollection m_inrpcDigis = digiCollectionRPCTwinMux;
 //typedef  DigiContainerIterator<RPCDetId, RPCDigi> DigiRangeIterator;
-edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCLegacy;
+edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCTwinMux;
 //std::cout << *m_inrpcDigis << std::endl;
 for(auto hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
   RPCDetId rpcDetId = (*hit).first;
-  //std::cout << "Region is: " << rpcDetId.region() << std::endl;
-  region.push_back(rpcDetId.region());
+  RPCDigi rpcDigi = (*hit).second;
+  region_v.push_back(rpcDetId.region());
+  bx_v.push_back(rpcDetId.bx());
 }
 
 
@@ -224,7 +228,14 @@ void RPC2TMAna::endJob() {
 
   // Print the region vector.
   std::cout << "\n\n\nregion = { ";
-  for(int n : region){
+  for(int n : region_v){
+    std::cout << n << ", ";
+  }
+  std::cout << "}; \n";
+
+  // Print the bx vector.
+  std::cout << "\n\n\nbx = { ";
+  for(int n : bx_v){
     std::cout << n << ", ";
   }
   std::cout << "}; \n";
