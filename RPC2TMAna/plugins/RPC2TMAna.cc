@@ -94,6 +94,9 @@ private:
   TH1D* hist_phiOutSize;
   TH1D* hist_thetaSize;
 
+  // Create a vector to store the region.
+  std::vector<int> region;
+
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
   edm::ESGetToken<SetupData, SetupRecord> setupToken_;
 #endif
@@ -207,8 +210,6 @@ void RPC2TMAna::beginJob() {
   hist_phiOutSize = fs->make<TH1D>("phiOut_size", "phiOut_size", 60, -0.5, 59.5);  // integer
   hist_thetaSize = fs->make<TH1D>("theta_size", "theta_size", 60, -0.5, 59.5);  // integer
 
-  // Create a vector to store the region.
-  std::vector<int> region;
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
@@ -223,7 +224,7 @@ void RPC2TMAna::endJob() {
 
   // Print the region vector.
   std::cout << "\n\n\nregion = { ";
-  for(int n : v){
+  for(int n : region){
     std::cout << n << ", ";
   }
   std::cout << "}; \n";
