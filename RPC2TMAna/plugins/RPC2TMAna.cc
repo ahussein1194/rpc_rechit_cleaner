@@ -190,7 +190,7 @@ for(auto hit = m_inrpcDigis->begin(); hit != m_inrpcDigis->end(); ++hit) {
   RPCDetId rpcDetId = (*hit).first;
   RPCDigi rpcDigi = (*hit).second;
   region_v.push_back(rpcDetId.region());
-  bx_v.push_back(rpcDetId.bx());
+  bx_v.push_back(rpcDigi.bx());
 }
 
 
