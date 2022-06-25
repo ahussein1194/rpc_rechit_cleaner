@@ -183,30 +183,69 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   hist_thetaSize->Fill(v_TwinMuxTheta->size());
 
 
-// Taken from RPCHitCleaner.cc
+/////////////////// Taken from RPCHitCleaner.cc //////////////////////
 
-//RPCDigiCollection m_inrpcDigis = digiCollectionRPCTwinMux;
-//typedef  DigiContainerIterator<RPCDetId, RPCDigi> DigiRangeIterator;
-edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCLegacy;
-// digiCollectionRPCLegacy is our RPCDigiCollection<RPCDetId, RPCDigi>
+// Some definitions.
+// map to store the rpcDetId, bx, strip and the index of the cluster where each digi was clusterized.
+// key = struct(rpcDetId, bx, strip)
+// value = index of the cluster where each digi was clusterized
+std::map<RPCHitCleaner::detId_Ext, int> hits;
+
+// vector for the cluster size of the clusters in each event, ordered by cluster index
+std::vector<int> vcluster_size;
+
+// map
+std::map<RPCDetId, int> bx_hits;
+
+int cluster_size = 0; // assigned zero for each new cluster.
+int cluster_id = -1;
+int itr = 0;
+
+
+// First: Select digis unpacked from RPC TwinMux digi collection.
+edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCTwinMux;
 
 // Loop through the chmabers. RPCDetId specifies a chamber.
 for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++chamber) {
   //region_v.push_back(rpcDetId.region());
   RPCDetId rpcDetId = (*chamber).first;
-  int strip_n1 = -10000; //???
-  int bx_n1 = -10000; //???
+  int strip_n1 = -10000;
+  int bx_n1 = -10000;
 
   // Select Barrel hits only.
   if(rpcDetId.region() != 0) continue;
 
-  // Loop through the digis in a specific chamber.
+  // Loop through the digi collection in the specific chamber.
   for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
     // (*hit.second.first) is our digi iterator and (*hit.second.second) is the ending one.
     //bx_v.push_back(digi->bx());
-    strip_v.push_back(digi->strip());
-  }
-}
+    //strip_v.push_back(digi->strip());
+
+    // Select hits with |bx| <= 3 only.
+    if(fabs(digi->bx()) > 3) continue;
+
+    // Check:
+    // if the two successive digis have the same bx and in adjacent strips, fill in the same cluster.
+    // if any of the two conditions is false, construct a new cluster (cluster_id and cluster_size).
+    if(abs(digi->strip() - strip_n1) != 1 || digi->bx() != bx_n1) {
+      // Fill the cluster size for the previous cluster in vcluster_size before
+      // assigning zero for cluster_size and adding a new index for the next cluster.
+      if(itr != 0)
+        vcluster_size.push_back(cluster_size); // note: the cluster_id = index for the specific cluster in the vector.
+      cluster_size = 0; // for the new cluster.
+      cluster_id++; // assign a new index for the next cluster.
+    }
+    itr++;
+    cluster_size++;
+
+    // Hits belong to cluster with cluster_id.
+    RPCHitCleaner::detId_Ext tmp{rpcDetId, digi->bx(), digi->strip()};
+    hits[tmp] = cluster_id;
+    strip_n1 = digi->strip();
+    bx_n1 = digi->bx();
+  } // End of loop over digis.
+} // End of loop over chambers.
+vcluster_size.push_back(cluster_size); // store size of the last cluster.
 
 
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
