@@ -263,7 +263,9 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
       // assigning zero for cluster_size and adding a new index for the next cluster.
       if(itr != 0) {
         vcluster_size.push_back(cluster_size); // note: the cluster_id = index for the specific cluster in the vector.
+        hist_clusterSize_RPCTwinMux->Fill(cluster_size);
         clusterSize_bx[cluster_size].push_back(bx_n1);
+        hist_clusterSize_RPCTwinMux
       }
 
       //std::cout << "Cluster size = " << vcluster_size[cluster_id] << std::endl;
@@ -283,6 +285,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
   } // End of loop over digis.
 } // End of first loop over chambers.
 vcluster_size.push_back(cluster_size); // store size of the last cluster.
+hist_clusterSize_RPCTwinMux->Fill(cluster_size);
 clusterSize_bx[cluster_size].push_back(bx_n1);
 //std::cout << "Final Cluster size = " << vcluster_size[cluster_id] << std::endl;
 
@@ -348,9 +351,9 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 
 
 // Loop through the vcluster_size vector to fill the cluster size for RPCTwinMux clusters.
-for(int clu_size : vcluster_size){
-  hist_clusterSize_RPCTwinMux->Fill(clu_size);
-  std::cout << clu_size << std::endl;
+//for(int clu_size : vcluster_size){
+//  hist_clusterSize_RPCTwinMux->Fill(clu_size);
+//  std::cout << clu_size << std::endl;
 }
 //std::cout << "\n";
 
