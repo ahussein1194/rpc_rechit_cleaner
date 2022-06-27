@@ -354,6 +354,7 @@ for(int clu_size : vcluster_size){
 }
 //std::cout << "\n";
 
+// Draw the scatter plot of cluster_size vs bx.
 for(auto cS_bx : clusterSize_bx) {
   for(int BX : cS_bx.second){
     hist_clusterSize_bx->Fill(cS_bx.first, BX);
