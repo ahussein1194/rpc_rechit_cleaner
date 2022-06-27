@@ -295,7 +295,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     RPCHitCleaner::detId_Ext tmp{rpcDetId, digi->bx(), digi->strip()};
     // Get the cluster_id of this hit.
     int cluster_id = hits[tmp];
-    // Remove clusters with size>=4
+    // Remove clusters with size>=4  //??????
     if(vcluster_size[cluster_id] >= 4) continue;
     // keep cluster with min bx in a roll.
     //if(bx_hits[rpcDetId] > digi->bx())
@@ -305,14 +305,17 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 
   // Second Inner Loop through the digi collection in the specific chamber.
 
+
+
+  // Print the bx values stored in bx_hits.
+  std::cout << "\n\n\nbx = { ";
+  for(auto bxHits_it : bx_hits) {
+    std::cout << bxHits_it.second << ", ";
+  }
+  std::cout << "}; \n";
+
 } // End of the second loop over chambers.
 
-// Print the bx values stored in bx_hits.
-std::cout << "\n\n\nbx = { ";
-for(auto bxHits_it : bx_hits) {
-  std::cout << bxHits_it.second << ", ";
-}
-std::cout << "}; \n";
 
 // Loop through the vcluster_size vector to fill the cluster size for RPCTwinMux clusters.
 for(int clu_size : vcluster_size){
