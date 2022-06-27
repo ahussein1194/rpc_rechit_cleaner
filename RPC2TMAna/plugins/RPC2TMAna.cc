@@ -353,7 +353,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 //for(int clu_size : vcluster_size){
 //  hist_clusterSize_RPCTwinMux->Fill(clu_size);
 //  std::cout << clu_size << std::endl;
-}
+//}
 //std::cout << "\n";
 
 // Draw the scatter plot of cluster_size vs bx.
