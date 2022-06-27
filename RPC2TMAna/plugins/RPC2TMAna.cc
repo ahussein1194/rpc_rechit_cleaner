@@ -272,7 +272,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
       cluster_id++; // assign a new index for the next cluster.
     }
     itr++;
-    cluster_size += 1;
+    cluster_size++;
 
     // Hits belong to cluster with cluster_id.
     // Store the info of the hit in a tmp variable.
