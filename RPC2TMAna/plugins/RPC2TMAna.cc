@@ -309,8 +309,8 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 
 // Print the bx values store in bx_hits.
 std::cout << "\n\n\nregion = { ";
-for(auto it : bx_hits) {
-  std::cout << bx_hits.second << ", ";
+for(auto bxHits_it : bx_hits) {
+  std::cout << it.second << ", ";
 }
 std::cout << "}; \n";
 
