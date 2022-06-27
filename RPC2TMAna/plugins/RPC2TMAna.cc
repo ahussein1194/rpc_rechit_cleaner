@@ -234,12 +234,14 @@ std::map<int, std::vector<int>> clusterSize_bx;
 // First: Select digis unpacked from RPC TwinMux digi collection.
 edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCTwinMux;
 
+int bx_n1 = -10000;
+
 // First Loop through the chmabers. RPCDetId specifies a chamber.
 for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++chamber) {
   //region_v.push_back(rpcDetId.region());
   RPCDetId rpcDetId = (*chamber).first;
   int strip_n1 = -10000;
-  int bx_n1 = -10000;
+  //int bx_n1 = -10000;
 
   // Select Barrel hits only.
   if(rpcDetId.region() != 0) continue;
@@ -352,7 +354,7 @@ for(int clu_size : vcluster_size){
 }
 //std::cout << "\n";
 
-for(auto cS_bx : clusterSize_RPCTwinMux) {
+for(auto cS_bx : clusterSize_bx) {
   for(int BX : cS_bx.second){
     hist_clusterSize_bx->Fill(cS_bx.first, BX);
   }
