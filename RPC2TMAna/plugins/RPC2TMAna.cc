@@ -307,8 +307,8 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 
 } // End of the second loop over chambers.
 
-// Print the bx values store in bx_hits.
-std::cout << "\n\n\nregion = { ";
+// Print the bx values stored in bx_hits.
+std::cout << "\n\n\nbx = { ";
 for(auto bxHits_it : bx_hits) {
   std::cout << bxHits_it.second << ", ";
 }
@@ -348,13 +348,13 @@ void RPC2TMAna::endJob() {
   // please remove this method if not needed
 
   // Check overflows
-  std::cout << "\n\n\n\n";
-  std::cout << "#overflows in phi_in = " << hist_phiInSize->GetBinContent(hist_phiInSize->GetNbinsX() + 1) << std::endl;
-  std::cout << "#overflows in phi_out = " << hist_phiOutSize->GetBinContent(hist_phiOutSize->GetNbinsX() + 1) << std::endl;
-  std::cout << "#overflows in theta = " << hist_thetaSize->GetBinContent(hist_thetaSize->GetNbinsX() + 1) << std::endl;
-  std::cout << "#overflows in hist_clusterSize_RPCTwinMux = " << hist_clusterSize_RPCTwinMux->GetBinContent(hist_clusterSize_RPCTwinMux->GetNbinsX() + 1) << std::endl;
+  //std::cout << "\n\n\n\n";
+  //std::cout << "#overflows in phi_in = " << hist_phiInSize->GetBinContent(hist_phiInSize->GetNbinsX() + 1) << std::endl;
+  //std::cout << "#overflows in phi_out = " << hist_phiOutSize->GetBinContent(hist_phiOutSize->GetNbinsX() + 1) << std::endl;
+  //std::cout << "#overflows in theta = " << hist_thetaSize->GetBinContent(hist_thetaSize->GetNbinsX() + 1) << std::endl;
+  //std::cout << "#overflows in hist_clusterSize_RPCTwinMux = " << hist_clusterSize_RPCTwinMux->GetBinContent(hist_clusterSize_RPCTwinMux->GetNbinsX() + 1) << std::endl;
 
-  // Print the region vector.
+  /*// Print the region vector.
   std::cout << "\n\n\nregion = { ";
   for(int n : region_v){
     std::cout << n << ", ";
@@ -373,7 +373,7 @@ void RPC2TMAna::endJob() {
   for(int n : strip_v){
     std::cout << n << ", ";
   }
-  std::cout << "}; \n";
+  std::cout << "}; \n";*/
 
 }
 
