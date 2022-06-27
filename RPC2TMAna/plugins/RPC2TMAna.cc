@@ -50,6 +50,7 @@
 
 // Header file for ROOT histogramming.
 #include "TH1.h"
+#include "TH2.h"
 
 // Header Files for the algo.
 #include "L1Trigger/L1TTwinMux/interface/RPCHitCleaner.h"
@@ -94,6 +95,7 @@ private:
   TH1D* hist_phiOutSize;
   TH1D* hist_thetaSize;
   TH1D* hist_clusterSize_RPCTwinMux;
+  TH2D* hist_clusterSize_bx;
 
   // Create a vector to store the region of each hit.
   std::vector<int> region_v;
@@ -225,6 +227,9 @@ int cluster_size = 0; // assigned zero for each new cluster.
 int cluster_id = -1;
 int itr = 0;
 
+// map to store values of bx for each cluster_size.
+std::map<int, std::vector<int>> clusterSize_bx;
+
 
 // First: Select digis unpacked from RPC TwinMux digi collection.
 edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCTwinMux;
@@ -254,8 +259,11 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     if(abs(digi->strip() - strip_n1) != 1 || digi->bx() != bx_n1) {
       // Fill the cluster size for the previous cluster in vcluster_size before
       // assigning zero for cluster_size and adding a new index for the next cluster.
-      if(itr != 0)
+      if(itr != 0) {
         vcluster_size.push_back(cluster_size); // note: the cluster_id = index for the specific cluster in the vector.
+        clusterSize_bx[cluster_size].push_back(bx_n1);
+      }
+
       //std::cout << "Cluster size = " << vcluster_size[cluster_id] << std::endl;
       cluster_size = 0; // for the new cluster.
       cluster_id++; // assign a new index for the next cluster.
@@ -273,6 +281,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
   } // End of loop over digis.
 } // End of first loop over chambers.
 vcluster_size.push_back(cluster_size); // store size of the last cluster.
+clusterSize_bx[cluster_size].push_back(bx_n1);
 //std::cout << "Final Cluster size = " << vcluster_size[cluster_id] << std::endl;
 
 
@@ -341,7 +350,13 @@ for(int clu_size : vcluster_size){
   hist_clusterSize_RPCTwinMux->Fill(clu_size);
   //std::cout << clu_size;
 }
-std::cout << "\n";
+//std::cout << "\n";
+
+for(auto cS_bx : clusterSize_RPCTwinMux) {
+  for(int BX : cS_bx.second){
+    hist_clusterSize_bx->Fill(cS_bx.first, BX);
+  }
+}
 
 
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
@@ -364,6 +379,8 @@ void RPC2TMAna::beginJob() {
   hist_phiOutSize = fs->make<TH1D>("phiOut_size", "phiOut_size", 60, -0.5, 59.5);
   hist_thetaSize = fs->make<TH1D>("theta_size", "theta_size", 50, -0.5, 49.5);
   hist_clusterSize_RPCTwinMux = fs->make<TH1D>("clusterSize_RPCTwinMux", "clusterSize_RPCTwinMux", 60, -0.5, 59.5);
+  hist_clusterSize_bx = fs->make<TH2D>("clusterSize_bx", "clusterSize_bx", 50, -0.5, 49.5, -4.5, 4.5);
+
 
 }
 
