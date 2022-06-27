@@ -256,7 +256,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
       // assigning zero for cluster_size and adding a new index for the next cluster.
       if(itr != 0)
         vcluster_size.push_back(cluster_size); // note: the cluster_id = index for the specific cluster in the vector.
-      std::cout << "Cluster size = " << vcluster_size[cluster_id] << std::endl;
+      //std::cout << "Cluster size = " << vcluster_size[cluster_id] << std::endl;
       cluster_size = 0; // for the new cluster.
       cluster_id++; // assign a new index for the next cluster.
     }
@@ -273,7 +273,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
   } // End of loop over digis.
 } // End of first loop over chambers.
 vcluster_size.push_back(cluster_size); // store size of the last cluster.
-std::cout << "Final Cluster size = " << vcluster_size[cluster_id] << std::endl;
+//std::cout << "Final Cluster size = " << vcluster_size[cluster_id] << std::endl;
 
 
 
