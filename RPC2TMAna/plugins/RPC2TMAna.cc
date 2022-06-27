@@ -381,7 +381,7 @@ void RPC2TMAna::beginJob() {
   hist_phiOutSize = fs->make<TH1D>("phiOut_size", "phiOut_size", 60, -0.5, 59.5);
   hist_thetaSize = fs->make<TH1D>("theta_size", "theta_size", 50, -0.5, 49.5);
   hist_clusterSize_RPCTwinMux = fs->make<TH1D>("clusterSize_RPCTwinMux", "clusterSize_RPCTwinMux", 60, -0.5, 59.5);
-  hist_clusterSize_bx = fs->make<TH2D>("clusterSize_bx", "clusterSize_bx", 50, -0.5, 49.5, -4.5, 4.5);
+  hist_clusterSize_bx = fs->make<TH2D>("clusterSize_bx", "clusterSize_bx", 50, -0.5, 49.5, 50, -4.5, 4.5);
 
 
 }
