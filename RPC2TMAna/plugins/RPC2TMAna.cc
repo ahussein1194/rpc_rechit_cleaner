@@ -149,7 +149,7 @@ RPC2TMAna::~RPC2TMAna() {
 
 namespace {
   constexpr int max_rpc_bx = 3;
-  constexpr int min_rpc_by = -3;
+  constexpr int min_rpc_bx = -3;
 
   // Need to shift the index so that index 0 corresponds to min_rpc_bx.
   // Define the class of "BXToStrips"
