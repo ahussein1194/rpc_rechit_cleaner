@@ -265,7 +265,6 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
         vcluster_size.push_back(cluster_size); // note: the cluster_id = index for the specific cluster in the vector.
         hist_clusterSize_RPCTwinMux->Fill(cluster_size);
         clusterSize_bx[cluster_size].push_back(bx_n1);
-        hist_clusterSize_RPCTwinMux
       }
 
       //std::cout << "Cluster size = " << vcluster_size[cluster_id] << std::endl;
