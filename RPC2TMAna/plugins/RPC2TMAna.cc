@@ -296,7 +296,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     // Get the cluster_id of this hit.
     int cluster_id = hits[tmp];
     // Remove clusters with size>=4  //??????
-    if(vcluster_size[cluster_id] >= 4) continue;
+    if(vcluster_size[cluster_id] >= 4) continue; // if a chamber have all its clusters with size >= 4 then we may have bx_hits with bx = 10 (start value)
     // keep cluster with min bx in a roll.
     //if(bx_hits[rpcDetId] > digi->bx())
     if(digi->bx() < bx_hits[rpcDetId])
@@ -304,15 +304,31 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
   } // End of the first inner loop over digis.
 
   // Second Inner Loop through the digi collection in the specific chamber.
+  for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
+    if(fabs(digi->bx()) > 3) continue;
+    // Store the info of the hit in a tmp variable.
+    RPCHitCleaner::detId_Ext tmp{rpcDetId, digi->bx(), digi->strip()};
+    int cluster_id = hits[tmp];
+    // Remove clusters with size>=4
+    if(vcluster_size[cluster_id] >= 4) continue;
+    // Keep only one bx per st/sec/wheel/layer (chamber ?)
+    //
+    if(digi->bx() != bx_hits[rpcDetId]) continue;
+    // Count strips in a cluster
+
+
+  } // End of the second inner loop over digis.
 
 
 
+
+  /*
   // Print the bx values stored in bx_hits.
   std::cout << "\n\n\nbx = { ";
   for(auto bxHits_it : bx_hits) {
     std::cout << bxHits_it.second << ", ";
   }
-  std::cout << "}; \n";
+  std::cout << "}; \n";*/
 
 } // End of the second loop over chambers.
 
@@ -320,7 +336,9 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 // Loop through the vcluster_size vector to fill the cluster size for RPCTwinMux clusters.
 for(int clu_size : vcluster_size){
   hist_clusterSize_RPCTwinMux->Fill(clu_size);
+  std::cout << clu_size;
 }
+std::cout << "\n";
 
 
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
@@ -357,7 +375,8 @@ void RPC2TMAna::endJob() {
   //std::cout << "#overflows in theta = " << hist_thetaSize->GetBinContent(hist_thetaSize->GetNbinsX() + 1) << std::endl;
   //std::cout << "#overflows in hist_clusterSize_RPCTwinMux = " << hist_clusterSize_RPCTwinMux->GetBinContent(hist_clusterSize_RPCTwinMux->GetNbinsX() + 1) << std::endl;
 
-  /*// Print the region vector.
+  /*
+  // Print the region vector.
   std::cout << "\n\n\nregion = { ";
   for(int n : region_v){
     std::cout << n << ", ";
