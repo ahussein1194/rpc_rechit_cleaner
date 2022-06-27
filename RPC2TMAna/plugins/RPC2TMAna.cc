@@ -147,6 +147,29 @@ RPC2TMAna::~RPC2TMAna() {
 // member functions
 //
 
+namespace {
+  constexpr int max_rpc_bx = 3;
+  constexpr int min_rpc_by = -3;
+
+  // Need to shift the index so that index 0 corresponds to min_rpc_bx.
+  // Define the class of "BXToStrips"
+  class BXToStrips {
+  public:
+    BXToStrips() : m_strips{} {} //zero initializes
+
+    // A fn that returns true if bx is out of the range [min_rpc_bx, max_rpc_bx].
+    static bool outOfRange(int iBX) {return (iBX > max_rpc_bx or iBX < min_rpc_bx);}
+
+    //
+    int& operator[] (int iBX) {return m_strips[iBX - min_rpc_bx];}
+
+    size_t size() const {return m_strips.size();}
+
+  private:
+    std::array<int, max_rpc_bx - min_rpc_bx + 1> m_strips;
+  }; // class
+} //namespace
+
 // ------------ method called for each event  ------------
 void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   using namespace edm;
@@ -195,7 +218,7 @@ std::map<RPCHitCleaner::detId_Ext, int> hits;
 // vector for the cluster size of the clusters in each event, ordered by cluster index
 std::vector<int> vcluster_size;
 
-// map
+// map to store thr RPC DetId for a chamber and the min bx of a digi in the chamber's digi collection.
 std::map<RPCDetId, int> bx_hits;
 
 int cluster_size = 0; // assigned zero for each new cluster.
@@ -206,7 +229,7 @@ int itr = 0;
 // First: Select digis unpacked from RPC TwinMux digi collection.
 edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCTwinMux;
 
-// Loop through the chmabers. RPCDetId specifies a chamber.
+// First Loop through the chmabers. RPCDetId specifies a chamber.
 for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++chamber) {
   //region_v.push_back(rpcDetId.region());
   RPCDetId rpcDetId = (*chamber).first;
@@ -240,13 +263,56 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     cluster_size++;
 
     // Hits belong to cluster with cluster_id.
+    // Store the info of the hit in a tmp variable.
     RPCHitCleaner::detId_Ext tmp{rpcDetId, digi->bx(), digi->strip()};
+    // Assign the cluster index to this hit.
     hits[tmp] = cluster_id;
     strip_n1 = digi->strip();
     bx_n1 = digi->bx();
   } // End of loop over digis.
-} // End of loop over chambers.
+} // End of first loop over chambers.
 vcluster_size.push_back(cluster_size); // store size of the last cluster.
+
+
+// Loop over chambers and store the min bx of a digi in each chamber's digi collection.
+// Filling bx_hits.
+// Second Loop through the chmabers. RPCDetId specifies a chamber.
+for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++chamber) {
+  RPCDetId rpcDetId = (*chamber).first;
+  // Select Barrel hits only.
+  if(rpcDetId.region() != 0) continue;
+  BXToStrips strips; // ???
+  int cluster_n1 = -10;
+  bx_hits[rpcDetId] = 10; // a start value
+
+  /// Keep cluster with min bx in a roll.
+  // Fitst Inner Loop through the digi collection in the specific chamber.
+  for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
+    // Same as
+    //if(fabs(digi->bx()) > 3) continue;
+    if(BXToStrips::outOfRange(digi->bx())) continue;
+    // Store the info of the hit in a tmp variable.
+    RPCHitCleaner::detId_Ext tmp{rpcDetId, digi->bx(), digi->strip()};
+    // Get the cluster_id of this hit.
+    int cluster_id = hits[tmp];
+    // Remove clusters with size>=4
+    if(vcluster_size[cluster_id] >= 4) continue;
+    // keep cluster with min bx in a roll.
+    //if(bx_hits[rpcDetId] > digi->bx())
+    if(digi->bx() < bx_hits[rpcDetId])
+      bx_hits[rpcDetId] = digi->bx();
+  } // End of the first inner loop over digis.
+
+  // Second Inner Loop through the digi collection in the specific chamber.
+
+} // End of the second loop over chambers.
+
+// Print the bx values store in bx_hits.
+std::cout << "\n\n\nregion = { ";
+for(auto it : bx_hits) {
+  std::cout << bx_hits.second << ", ";
+}
+std::cout << "}; \n";
 
 // Loop through the vcluster_size vector to fill the cluster size for RPCTwinMux clusters.
 for(int clu_size : vcluster_size){
