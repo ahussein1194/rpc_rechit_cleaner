@@ -349,6 +349,9 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     // and
     // the #strips in the bx != 2
     // neglect this digi
+    // That means we store all digis which belong to clusters of size < 3,
+    // i.e., (1, 2). And for digis which belong to clusters of size = 3, we
+    // store only the 2nd digi in the cluster. 
     if(vcluster_size[cluster_id] == 3 && strips[digi->bx()] != 2) continue;
 
     ///Keep clusters with size=2. Calculate and store the mean phi in RPCtoDTTranslator
