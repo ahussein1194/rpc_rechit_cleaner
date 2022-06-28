@@ -384,10 +384,18 @@ for(int clu_size : vcluster_size){
 //std::cout << "\n";
 
 // Plot the count of cluster_size(s) after cleaning.
-for(auto hit : m_outrpcDigis) {
-  RPCDetId rpcdetid = hit.first;
-  RPCDigi rpcdigi = hit.second.first;
-  RPCHitCleaner::detId_Ext tmp{rpcdetid, rpcdigi->bx(), rpcdigi->strip()};
+for(auto chamber : m_outrpcDigis) {
+  RPCDetId rpcDetId = (*chamber).first;
+  // Loop over the digis.
+  for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
+    // Store the digi info in tmp.
+    RPCHitCleaner::detId_Ext tmp{rpcDetId, digi->bx(), digi->strip()};
+    // Get the cluster_id of the digi.
+    int cluster_id = hits[tmp];
+    // Get the size of the cluster.
+    clu_size = vcluster_size[cluster_id];
+    // Fill the cluster size in the histogram.
+    hist_clusterSize_RPCTwinMux_after->Fill(clu_size);
 }
 
 // Draw the scatter plot of cluster_size vs bx.
