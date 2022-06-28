@@ -320,7 +320,10 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     // Get the cluster_id of this hit.
     int cluster_id = hits[tmp];
     /// Remove clusters with size>=4
-    if(vcluster_size[cluster_id] >= 4) continue; // if a chamber have all its clusters with size >= 4 then we may have bx_hits with bx = 10 (start value)
+    // if a chamber have all its clusters with size >= 4 then we may have
+    // bx_hits with bx = 10 (start value) or it does not matter because we will
+    // neglect digis which belong to clusters of size >=4?
+    if(vcluster_size[cluster_id] >= 4) continue;
     // keep cluster with min bx in a roll.
     //if(bx_hits[rpcDetId] > digi->bx())
     if(digi->bx() < bx_hits[rpcDetId])
@@ -351,7 +354,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     // neglect this digi
     // That means we store all digis which belong to clusters of size < 3,
     // i.e., (1, 2). And for digis which belong to clusters of size = 3, we
-    // store only the 2nd digi in the cluster. 
+    // store only the 2nd digi in the cluster.
     if(vcluster_size[cluster_id] == 3 && strips[digi->bx()] != 2) continue;
 
     ///Keep clusters with size=2. Calculate and store the mean phi in RPCtoDTTranslator
