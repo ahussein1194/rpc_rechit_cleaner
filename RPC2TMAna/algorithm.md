@@ -13,3 +13,4 @@ I think the RPCHitCleaner strores only RPC Digis which satisfy all the following
 - So we constructed the second loop over chambers and first inner loop over digis to fill the (std::map<RPCDetId, int> bx_hits) map whcih stores the min_bx for a cluster (value) in each chamber (key) to use it for checking later.
 
 5. Store all digis which belong to clusters of cluster_size < 3. And for digis which belong to clusters of clu_size = 3, store only the second digi of the cluster in (m_outrpcDigis) RPCDigiCollection.
+- So we constructed the second loop over digis in the second loop over chambers to fill (m_outrpcDigis) RPCDigiCollection.
