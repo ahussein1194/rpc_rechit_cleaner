@@ -393,7 +393,7 @@ for (auto chamber = m_outrpcDigis.begin(); chamber != m_outrpcDigis.end(); ++cha
     // Get the cluster_id of the digi.
     int cluster_id = hits[tmp];
     // Get the size of the cluster.
-    clu_size = vcluster_size[cluster_id];
+    int clu_size = vcluster_size[cluster_id];
     // Fill the cluster size in the histogram.
     hist_clusterSize_RPCTwinMux_after->Fill(clu_size);
 }
