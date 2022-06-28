@@ -320,8 +320,8 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     // Get the cluster_id of this hit.
     int cluster_id = hits[tmp];
     /// Remove clusters with size>=4
-    // if a chamber have all its clusters with size >= 4 then we may have
-    // bx_hits with bx = 10 (start value) or it does not matter because we will
+    // if a chamber have all its clusters with size >= 4 then we may have chambers
+    // in bx_hits with bx = 10 (start value) or it does not matter because we will
     // neglect digis which belong to clusters of size >=4?
     if(vcluster_size[cluster_id] >= 4) continue;
     // keep cluster with min bx in a roll.
