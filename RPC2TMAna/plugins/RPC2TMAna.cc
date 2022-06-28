@@ -384,7 +384,7 @@ for(int clu_size : vcluster_size){
 //std::cout << "\n";
 
 // Plot the count of cluster_size(s) after cleaning.
-for(auto chamber : m_outrpcDigis) {
+for (auto chamber = m_outrpcDigis.begin(); chamber != m_outrpcDigis.end(); ++chamber) {
   RPCDetId rpcDetId = (*chamber).first;
   // Loop over the digis.
   for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
