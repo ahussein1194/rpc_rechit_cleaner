@@ -328,7 +328,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     // Remove clusters with size>=4
     if(vcluster_size[cluster_id] >= 4) continue;
     // Keep only one bx per st/sec/wheel/layer (chamber ?)
-    //
+    // Keep only the min bx we have constructed in "bx_hits"?
     if(digi->bx() != bx_hits[rpcDetId]) continue;
     // Count strips in a cluster
 
