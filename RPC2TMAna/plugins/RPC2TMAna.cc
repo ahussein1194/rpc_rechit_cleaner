@@ -94,7 +94,8 @@ private:
   TH1D* hist_phiInSize;
   TH1D* hist_phiOutSize;
   TH1D* hist_thetaSize;
-  TH1D* hist_clusterSize_RPCTwinMux;
+  TH1D* hist_clusterSize_RPCTwinMux_before;
+  TH1D* hist_clusterSize_RPCTwinMux_after;
   TH2D* hist_clusterSize_bx;
 
   // Create a vector to store the region of each hit.
@@ -377,10 +378,17 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 
 // Loop through the vcluster_size vector to fill the cluster size for RPCTwinMux clusters.
 for(int clu_size : vcluster_size){
-  hist_clusterSize_RPCTwinMux->Fill(clu_size);
+  hist_clusterSize_RPCTwinMux_before->Fill(clu_size);
 //  std::cout << clu_size << std::endl;
 }
 //std::cout << "\n";
+
+// Plot the count of cluster_size(s) after cleaning.
+for(auto hit : m_outrpcDigis) {
+  rpcdetid = hit.first;
+  rpcdigi = hit.second;
+  RPCHitCleaner::detId_Ext tmp{rpcdetid, rpcdigi->bx(), rpcdigi->strip()};
+}
 
 // Draw the scatter plot of cluster_size vs bx.
 for(auto cS_bx : clusterSize_bx) {
@@ -409,7 +417,8 @@ void RPC2TMAna::beginJob() {
   hist_phiInSize = fs->make<TH1D>("phiIn_size", "phiIn_size", 60, -0.5, 59.5);
   hist_phiOutSize = fs->make<TH1D>("phiOut_size", "phiOut_size", 60, -0.5, 59.5);
   hist_thetaSize = fs->make<TH1D>("theta_size", "theta_size", 50, -0.5, 49.5);
-  hist_clusterSize_RPCTwinMux = fs->make<TH1D>("clusterSize_RPCTwinMux", "clusterSize_RPCTwinMux", 60, -0.5, 59.5);
+  hist_clusterSize_RPCTwinMux_before = fs->make<TH1D>("clusterSize_RPCTwinMux_before", "clusterSize_RPCTwinMux_before", 60, -0.5, 59.5);
+  hist_clusterSize_RPCTwinMux_after = fs->make<TH1D>("clusterSize_RPCTwinMux_after", "clusterSize_RPCTwinMux_after", 60, -0.5, 59.5);
   hist_clusterSize_bx = fs->make<TH2D>("clusterSize_bx", "clusterSize_bx", 60, -0.5, 59.5, 9, -4.5, 4.5);
 
 
