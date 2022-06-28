@@ -386,7 +386,7 @@ for(int clu_size : vcluster_size){
 // Plot the count of cluster_size(s) after cleaning.
 for(auto hit : m_outrpcDigis) {
   RPCDetId rpcdetid = hit.first;
-  RPCDigi rpcdigi = hit.second;
+  RPCDigi rpcdigi = hit.second.first;
   RPCHitCleaner::detId_Ext tmp{rpcdetid, rpcdigi->bx(), rpcdigi->strip()};
 }
 
