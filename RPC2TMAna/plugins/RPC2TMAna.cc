@@ -153,7 +153,7 @@ namespace {
   constexpr int max_rpc_bx = 3;
   constexpr int min_rpc_bx = -3;
 
-  // Need to shift the index so that index 0 corresponds to min_rpc_bx.
+  /// Need to shift the index so that index 0 corresponds to min_rpc_bx.
   // Define the class of "BXToStrips"
   class BXToStrips {
   public:
@@ -162,12 +162,15 @@ namespace {
     // A fn that returns true if bx is out of the range [min_rpc_bx, max_rpc_bx].
     static bool outOfRange(int iBX) {return (iBX > max_rpc_bx or iBX < min_rpc_bx);}
 
-    //
+    // Make operator such that m_strips[iBX] gives the #strips for iBX.
     int& operator[] (int iBX) {return m_strips[iBX - min_rpc_bx];}
 
     size_t size() const {return m_strips.size();}
 
   private:
+    // m_strips is an array of type int and of size (max_rpc_bx - min_rpc_bx + 1)
+    // m_strips is used to store the #strips for a specific bx.
+    // Each bx is assigned an index [-3,3]->[1-6]
     std::array<int, max_rpc_bx - min_rpc_bx + 1> m_strips;
   }; // class
 } //namespace
@@ -212,6 +215,9 @@ void RPC2TMAna::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 /////////////////// Taken from RPCHitCleaner.cc //////////////////////
 
 // Some definitions.
+
+// Instance to store the cleaned RPC Digis.
+RPCDigiCollection m_outrpcDigis;
 // map to store the rpcDetId, bx, strip and the index of the cluster where each digi was clusterized.
 // key = struct(rpcDetId, bx, strip)
 // value = index of the cluster where each digi was clusterized
@@ -255,6 +261,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     // Select hits with |bx| <= 3 only.
     if(fabs(digi->bx()) > 3) continue;
 
+    /// Create cluster ids and store their size
     // Check:
     // if the two successive digis have the same bx and in adjacent strips, fill in the same cluster.
     // if any of the two conditions is false, construct a new cluster (cluster_id and cluster_size).
@@ -274,11 +281,12 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     itr++;
     cluster_size++;
 
-    // Hits belong to cluster with cluster_id.
+    /// Hits belong to cluster with cluster_id.
     // Store the info of the hit in a tmp variable.
     RPCHitCleaner::detId_Ext tmp{rpcDetId, digi->bx(), digi->strip()};
     // Assign the cluster index to this hit.
     hits[tmp] = cluster_id;
+    /// Strip of i-1
     strip_n1 = digi->strip();
     bx_n1 = digi->bx();
   } // End of loop over digis.
@@ -311,7 +319,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     RPCHitCleaner::detId_Ext tmp{rpcDetId, digi->bx(), digi->strip()};
     // Get the cluster_id of this hit.
     int cluster_id = hits[tmp];
-    // Remove clusters with size>=4  //??????
+    /// Remove clusters with size>=4
     if(vcluster_size[cluster_id] >= 4) continue; // if a chamber have all its clusters with size >= 4 then we may have bx_hits with bx = 10 (start value)
     // keep cluster with min bx in a roll.
     //if(bx_hits[rpcDetId] > digi->bx())
@@ -325,17 +333,29 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     // Store the info of the hit in a tmp variable.
     RPCHitCleaner::detId_Ext tmp{rpcDetId, digi->bx(), digi->strip()};
     int cluster_id = hits[tmp];
-    // Remove clusters with size>=4
+    /// Remove clusters with size>=4
     if(vcluster_size[cluster_id] >= 4) continue;
-    // Keep only one bx per st/sec/wheel/layer (chamber ?)
+    /// Keep only one bx per st/sec/wheel/layer (chamber ?)
     // Keep only the min bx we have constructed in "bx_hits"?
     if(digi->bx() != bx_hits[rpcDetId]) continue;
-    // Count strips in a cluster
+    /// Count strips in a cluster
+    if(cluster_n1 != cluster_id) {
+      strips[digi->bx()] = {0}; // restart counter
+    }
+    strips[digi->bx()]++;
+    cluster_n1 = cluster_id;  // assign the current cluster_id to cluster_n1
 
+    // If the cluster_size of the current cluster = 2
+    // and
+    // the #strips in the bx != 2
+    // neglect this digi
+    if(vcluster_size[cluster_id] == 3 && strips[digi->bx()] != 2) continue;
+
+    ///Keep clusters with size=2. Calculate and store the mean phi in RPCtoDTTranslator
+    RPCDigi digi_out(digi->strip(), digi->bx());
+    m_outrpcDigis.insertDigi(rpcDetId, digi_out);
 
   } // End of the second inner loop over digis.
-
-
 
 
   /*
