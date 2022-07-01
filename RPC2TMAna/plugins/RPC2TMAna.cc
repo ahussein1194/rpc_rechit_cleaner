@@ -302,7 +302,7 @@ std::map<RPCHitCleaner::detId_Ext, int> clusters;
 //int cluster_id = 1;
 //int cluster_size = 0;
 int itrr = 1;
-for(auto chamber = m_inrpcDigis.begin(); chamber != m_inrpcDigis.end(); ++chamber) {
+for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++chamber) {
   RPCDetId rpcDetId = (*chamber).first;
   //int strip_n1 = -10000;
   //int bx_n1 = -10000;
