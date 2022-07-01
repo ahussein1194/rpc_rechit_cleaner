@@ -299,22 +299,22 @@ clusterSize_bx[cluster_size].push_back(bx_n1);
 
 /// Another way to form the vcluster_size vector.
 std::map<RPCHitCleaner::detId_Ext, int> clusters;
-int cluster_id = 1;
-int cluster_size = 0;
-int itr = 1;
+//int cluster_id = 1;
+//int cluster_size = 0;
+int itrr = 1;
 for(auto chamber = m_inrpcDigis.begin(); chamber != m_inrpcDigis.end(); ++chamber) {
   RPCDetId rpcDetId = (*chamber).first;
   //int strip_n1 = -10000;
   //int bx_n1 = -10000;
   if(rpcDetId.region() != 0) continue;
   for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
-    int strip_n1 = digi->strip();
-    int bx_n1 = digi->bx();
+    int strip_n2 = digi->strip();
+    int bx_n2 = digi->bx();
     if(fabs(bx_n1) > 3) continue;
     RPCHitCleaner detId_Ext tmp(rpcDetId, bx_n1, strip_n1);
     //RPCHitCleaner detId_Ext tmp_2(rpcDetId, bx_n1, strip_n1 - 1); // strip to the left
     //RPCHitCleaner detId_Ext tmp_3(rpcDetId, bx_n1, strip_n1 + 1); // strip to the right
-    if(itr == 1) {
+    if(itrr == 1) {
       clusters[tmp]++;
       continue;
     }
