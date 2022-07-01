@@ -311,7 +311,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     int strip_n2 = digi->strip();
     int bx_n2 = digi->bx();
     if(fabs(bx_n2) > 3) continue;
-    RPCHitCleaner::detId_Ext tmp(rpcDetId, bx_n2, strip_n2);
+    RPCHitCleaner::detId_Ext tmp{rpcDetId, bx_n2, strip_n2};
     //RPCHitCleaner detId_Ext tmp_2(rpcDetId, bx_n1, strip_n1 - 1); // strip to the left
     //RPCHitCleaner detId_Ext tmp_3(rpcDetId, bx_n1, strip_n1 + 1); // strip to the right
     if(itrr == 1) {
@@ -322,8 +322,8 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     for(auto ext = clusters.begin(); ext != clusters.end(); ++ext) {
       strip_before = (ext.first).bx - 1;
       strip_after = (ext.first).bx + 1;
-      RPCHitCleaner::detId_Ext ext_before(rpcDetId, bx_n1, strip_before); // strip to the left
-      RPCHitCleaner::detId_Ext ext_after(rpcDetId, bx_n1, strip_after); // strip to the right
+      RPCHitCleaner::detId_Ext ext_before{rpcDetId, bx_n1, strip_before}; // strip to the left
+      RPCHitCleaner::detId_Ext ext_after{rpcDetId, bx_n1, strip_after}; // strip to the right
       if(tmp == ext.first || tmp == ext_before || tmp == ext_after) clusters[ext]++;
       else clusters[tmp]++;
     }
