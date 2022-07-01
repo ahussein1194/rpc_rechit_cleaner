@@ -297,6 +297,61 @@ vcluster_size.push_back(cluster_size); // store size of the last cluster.
 clusterSize_bx[cluster_size].push_back(bx_n1);
 //std::cout << "Final Cluster size = " << vcluster_size[cluster_id] << std::endl;
 
+/// Another way to form the vcluster_size vector.
+std::map<RPCHitCleaner::detId_Ext, int> clusters;
+int cluster_id = 1;
+int cluster_size = 0;
+int itr = 1;
+for(auto chamber = m_inrpcDigis.begin(); chamber != m_inrpcDigis.end(); ++chamber) {
+  RPCDetId rpcDetId = (*chamber).first;
+  //int strip_n1 = -10000;
+  //int bx_n1 = -10000;
+  if(rpcDetId.region() != 0) continue;
+  for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
+    int strip_n1 = digi->strip();
+    int bx_n1 = digi->bx();
+    if(fabs(bx_n1) > 3) continue;
+    RPCHitCleaner detId_Ext tmp(rpcDetId, bx_n1, strip_n1);
+    //RPCHitCleaner detId_Ext tmp_2(rpcDetId, bx_n1, strip_n1 - 1); // strip to the left
+    //RPCHitCleaner detId_Ext tmp_3(rpcDetId, bx_n1, strip_n1 + 1); // strip to the right
+    if(itr == 1) {
+      clusters[tmp]++;
+      continue;
+    }
+    // Check if we have recorded the cluster before.
+    for(auto ext = clusters.begin(); ext != clusters.end(); ++ext) {
+      strip_before = (ext.first).bx - 1;
+      strip_after = (ext.first).bx + 1;
+      RPCHitCleaner detId_Ext ext_before(rpcDetId, bx_n1, strip_before); // strip to the left
+      RPCHitCleaner detId_Ext ext_after(rpcDetId, bx_n1, strip_after); // strip to the right
+      if(tmp == ext || tmp == ext_before || tmp == ext_after) clusters[ext]++;
+      else clusters[tmp]++;
+    }
+    itr++;
+  }
+    //cluster_id++;
+    //cluster_size = 1;
+  }
+    /*for(auto digi2 = (*chamber).second.first; digi2 != (*chamber).second.second; ++digi2) {
+      int strip_n2 = digi2->strip();
+      int bx_n2 = digi2->bx();
+      if(fabs(bx_n2) > 3) continue;
+      RPCHitCleaner detId_Ext tmp2(rpcDetId, bx_n2, strip_n2);
+      RPCHitCleaner detId_Ext tmp3(rpcDetId, bx_n2, strip_n2 - 1);
+      RPCHitCleaner detId_Ext tmp4(rpcDetId, bx_n2, strip_n2 + 1);
+      if(tmp == tmp3 || tmp == tmp4) {
+        cluster_size ++;
+      }
+    }*/
+//  }
+//}
+
+
+
+
+
+////////////////////////////////////// End of second way.
+
 
 
 // Loop over chambers and store the min bx of a digi in each chamber's digi collection.
