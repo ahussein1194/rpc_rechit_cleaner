@@ -320,11 +320,11 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     }
     // Check if we have recorded the cluster before.
     for(auto ext = clusters.begin(); ext != clusters.end(); ++ext) {
-      strip_before = (ext.first).bx - 1;
-      strip_after = (ext.first).bx + 1;
+      strip_before = (ext->first).bx - 1;
+      strip_after = (ext->first).bx + 1;
       RPCHitCleaner::detId_Ext ext_before{rpcDetId, bx_n1, strip_before}; // strip to the left
       RPCHitCleaner::detId_Ext ext_after{rpcDetId, bx_n1, strip_after}; // strip to the right
-      if(tmp == ext.first || tmp == ext_before || tmp == ext_after) clusters[ext.first]++;
+      if(tmp == ext->first || tmp == ext_before || tmp == ext_after) clusters[ext->first]++;
       else clusters[tmp]++;
     }
     itr++;
