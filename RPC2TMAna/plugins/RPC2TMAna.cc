@@ -241,6 +241,18 @@ std::map<int, std::vector<int>> clusterSize_bx;
 // First: Select digis unpacked from RPC TwinMux digi collection.
 edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCTwinMux;
 
+/////// Test
+int chamber_no = 1;
+for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++chamber) {
+  std::cout << "\n\n\n\n\n\n Chamber #" << chamber_no << ": {";
+  for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
+    std::cout << "(" << digi->bx() << "," << digi->strip() << "), ";
+  }
+  std::cout << "}\n";
+  chamber_no++;
+}
+/////// End of test
+
 int bx_n1 = -10000;
 
 // First Loop through the chmabers. RPCDetId specifies a chamber.
