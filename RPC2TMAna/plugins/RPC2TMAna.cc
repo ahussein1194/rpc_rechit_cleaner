@@ -310,8 +310,8 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
   for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
     int strip_n2 = digi->strip();
     int bx_n2 = digi->bx();
-    if(fabs(bx_n1) > 3) continue;
-    RPCHitCleaner::detId_Ext tmp(rpcDetId, bx_n1, strip_n1);
+    if(fabs(bx_n2) > 3) continue;
+    RPCHitCleaner::detId_Ext tmp(rpcDetId, bx_n2, strip_n2);
     //RPCHitCleaner detId_Ext tmp_2(rpcDetId, bx_n1, strip_n1 - 1); // strip to the left
     //RPCHitCleaner detId_Ext tmp_3(rpcDetId, bx_n1, strip_n1 + 1); // strip to the right
     if(itrr == 1) {
