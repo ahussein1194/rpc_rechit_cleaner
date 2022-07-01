@@ -297,8 +297,9 @@ vcluster_size.push_back(cluster_size); // store size of the last cluster.
 clusterSize_bx[cluster_size].push_back(bx_n1);
 //std::cout << "Final Cluster size = " << vcluster_size[cluster_id] << std::endl;
 
-/// Another way to form the vcluster_size vector.
-std::map<RPCHitCleaner::detId_Ext, int> clusters;
+/*/// Another way to form the vcluster_size vector.
+std::map<RPCDetId, std::map<RPCHitCleaner::detId_Ext, int>> clusters_all;
+//std::map<RPCHitCleaner::detId_Ext, int> clusters;
 //int cluster_id = 1;
 //int cluster_size = 0;
 int itrr = 1;
@@ -319,11 +320,15 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
       continue;
     }
     // Check if we have recorded the cluster before.
+    clusters = clusters_all[rpcDetId]
     for(auto ext = clusters.begin(); ext != clusters.end(); ++ext) {
-      strip_before = (ext->first).bx - 1;
-      strip_after = (ext->first).bx + 1;
-      RPCHitCleaner::detId_Ext ext_before{rpcDetId, bx_n1, strip_before}; // strip to the left
-      RPCHitCleaner::detId_Ext ext_after{rpcDetId, bx_n1, strip_after}; // strip to the right
+      ext_strip = ext->first.strip;
+      ext_bx = ext->first.bx;
+      //strip_before = (ext->first).strip - 1;
+      //strip_after = (ext->first).strip + 1;
+      //RPCHitCleaner::detId_Ext ext_before{rpcDetId, bx_n1, strip_before}; // strip to the left
+      //RPCHitCleaner::detId_Ext ext_after{rpcDetId, bx_n1, strip_after}; // strip to the right
+      if(abs(strip_n2 - ext_strip) != 1 || bx_n2 != ext_bx)
       if(tmp == ext->first || tmp == ext_before || tmp == ext_after) clusters[ext->first]++;
       else clusters[tmp]++;
     }
@@ -350,7 +355,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 
 
 
-////////////////////////////////////// End of second way.
+////////////////////////////////////// End of second way.*/
 
 
 
