@@ -242,7 +242,7 @@ std::map<int, std::vector<int>> clusterSize_bx;
 edm::Handle<RPCDigiCollection> m_inrpcDigis = digiCollectionRPCTwinMux;
 
 /////// Test
-int chamber_no = 1;
+/*int chamber_no = 1;
 for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++chamber) {
   std::cout << "\n\n\n\n\n\n Chamber #" << chamber_no << ": {";
   for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
@@ -250,7 +250,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
   }
   std::cout << "}\n";
   chamber_no++;
-}
+}*/
 /////// End of test
 
 int bx_n1 = -10000;
@@ -281,6 +281,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     if(abs(digi->strip() - strip_n1) != 1 || digi->bx() != bx_n1) {
       // Fill the cluster size for the previous cluster in vcluster_size before
       // assigning zero for cluster_size and adding a new index for the next cluster.
+      std::cout << "itr = " << itr;
       if(itr != 0) {
         vcluster_size.push_back(cluster_size); // note: the cluster_id = index for the specific cluster in the vector.
         //hist_clusterSize_RPCTwinMux->Fill(cluster_size);
