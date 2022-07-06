@@ -274,14 +274,13 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 
     // Select hits with |bx| <= 3 only.
     if(fabs(digi->bx()) > 3) continue;
-
     /// Create cluster ids and store their size
     // Check:
     // if the two successive digis have the same bx and in adjacent strips, fill in the same cluster.
     // if any of the two conditions is false, construct a new cluster (cluster_id and cluster_size).
     if(abs(digi->strip() - strip_n1) != 1 || digi->bx() != bx_n1) {
       // Fill the cluster size for the previous cluster in vcluster_size before
-      // assigning zero for cluster_size and adding a new index for the next cluster.
+      // assigning zero for cluster_size and adding a new \index for the next cluster.
       //std::cout << "itr = " << itr;
       if(itr != 0) {
         //std::cout << "Size: " << cluster_size;
@@ -311,8 +310,11 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 std::cout << "Size: " << cluster_size;
 if(cluster_size == 0) std::cout << "\n\n\n\n\n WARNING: WE HAVE A ZERO \n\n\n\n\n\n\n\n";
 vcluster_size.push_back(cluster_size); // store size of the last cluster.
+// If the event does not have any clusters thats satisfy the conditions, we have cluster_size = 0, the default value.
 //hist_clusterSize_RPCTwinMux->Fill(cluster_size);
 clusterSize_bx[cluster_size].push_back(bx_n1);
+//If the event does not have any clusters thats satisfy the conditions, we have cluster_size = 0, the default value,
+// and then the map stores the default value of bx_n1 which is -10000.
 //std::cout << "Final Cluster size = " << vcluster_size[cluster_id] << std::endl;
 
 /*/// Another way to form the vcluster_size vector.
