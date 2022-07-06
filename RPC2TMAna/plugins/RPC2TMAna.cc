@@ -284,8 +284,8 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
       // assigning zero for cluster_size and adding a new index for the next cluster.
       //std::cout << "itr = " << itr;
       if(itr != 0) {
-        std::cout << "Size: " << cluster_size;
-        if(cluster_size == 0) std::cout << "\n\n\n\n\n WARNING: WE HAVE A ZERO \n\n\n\n\n\n\n\n";
+        //std::cout << "Size: " << cluster_size;
+        //if(cluster_size == 0) std::cout << "\n\n\n\n\n WARNING: WE HAVE A ZERO \n\n\n\n\n\n\n\n";
         vcluster_size.push_back(cluster_size); // note: the cluster_id = index for the specific cluster in the vector.
         //hist_clusterSize_RPCTwinMux->Fill(cluster_size);
         clusterSize_bx[cluster_size].push_back(bx_n1);
@@ -308,6 +308,8 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     bx_n1 = digi->bx();
   } // End of loop over digis.
 } // End of first loop over chambers.
+std::cout << "Size: " << cluster_size;
+if(cluster_size == 0) std::cout << "\n\n\n\n\n WARNING: WE HAVE A ZERO \n\n\n\n\n\n\n\n";
 vcluster_size.push_back(cluster_size); // store size of the last cluster.
 //hist_clusterSize_RPCTwinMux->Fill(cluster_size);
 clusterSize_bx[cluster_size].push_back(bx_n1);
