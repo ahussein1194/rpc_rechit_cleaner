@@ -267,6 +267,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 
   // Loop through the digi collection in the specific chamber.
   for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
+    std::cout << "itr = " << itr;
     // (*hit.second.first) is our digi iterator and (*hit.second.second) is the ending one.
     //bx_v.push_back(digi->bx());
     //strip_v.push_back(digi->strip());
@@ -281,7 +282,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
     if(abs(digi->strip() - strip_n1) != 1 || digi->bx() != bx_n1) {
       // Fill the cluster size for the previous cluster in vcluster_size before
       // assigning zero for cluster_size and adding a new index for the next cluster.
-      std::cout << "itr = " << itr;
+      //std::cout << "itr = " << itr;
       if(itr != 0) {
         vcluster_size.push_back(cluster_size); // note: the cluster_id = index for the specific cluster in the vector.
         //hist_clusterSize_RPCTwinMux->Fill(cluster_size);
