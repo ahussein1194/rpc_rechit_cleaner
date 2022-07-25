@@ -46,7 +46,7 @@ process.load("EventFilter.L1TXRawToDigi.twinMuxStage2Digis_cfi")
 
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(6000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source = cms.Source("PoolSource",
                                 fileNames = cms.untracked.vstring(
