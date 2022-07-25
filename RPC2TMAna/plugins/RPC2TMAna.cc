@@ -458,6 +458,7 @@ for(auto chamber = m_inrpcDigis->begin(); chamber != m_inrpcDigis->end(); ++cham
 
 // Loop through the vcluster_size vector to fill the cluster size for RPCTwinMux clusters.
 for(int clu_size : vcluster_size){
+  if(clu_size == 0) continue; // To neglect ignored events.
   hist_clusterSize_RPCTwinMux_before->Fill(clu_size);
 //  std::cout << clu_size << std::endl;
 }
@@ -481,6 +482,7 @@ for (auto chamber = m_outrpcDigis.begin(); chamber != m_outrpcDigis.end(); ++cha
 
 // Draw the scatter plot of cluster_size vs bx.
 for(auto cS_bx : clusterSize_bx) {
+  if(cS_bx.first == 0) continue;
   for(int BX : cS_bx.second){
     hist_clusterSize_bx->Fill(cS_bx.first, BX);
   }
