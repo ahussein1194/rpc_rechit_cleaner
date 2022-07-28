@@ -505,6 +505,9 @@ for(auto chamber = m_outrpcDigis.begin(); chamber != m_outrpcDigis.end(); ++cham
     // Get the bx of the cluster
     int clu_bx = digi->bx();
     // Fill the histogram.
+    if(clu_size == 2)
+    hist_clusterSize_bx_after->Fill(clu_size, clu_bx, 0.5);
+    else
     hist_clusterSize_bx_after->Fill(clu_size, clu_bx);
   }
 }
