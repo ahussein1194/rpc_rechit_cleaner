@@ -476,6 +476,7 @@ for (auto chamber = m_outrpcDigis.begin(); chamber != m_outrpcDigis.end(); ++cha
     // Get the size of the cluster.
     int clu_size = vcluster_size[cluster_id];
     // Fill the cluster size in the histogram.
+    if(clu_size == 2) hist_clusterSize_RPCTwinMux_after->Fill(clu_size, 0.5);
     hist_clusterSize_RPCTwinMux_after->Fill(clu_size);
   }
 }
