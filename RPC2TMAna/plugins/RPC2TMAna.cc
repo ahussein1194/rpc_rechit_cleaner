@@ -493,7 +493,7 @@ for(auto cS_bx : clusterSize_bx) {
 }
 
 // Draw the scatter plot of cluster_size vs bx after cleaning.
-for(auto chamber = m_outrpcDigis->begin(); chamber != m_outrpcDigis->end(); ++chamber) {
+for(auto chamber = m_outrpcDigis.begin(); chamber != m_outrpcDigis.end(); ++chamber) {
   RPCDetId rpcDetId = (*chamber).first;
   for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
     // Store the digi info in tmp.
