@@ -97,6 +97,7 @@ private:
   TH1D* hist_clusterSize_RPCTwinMux_before;
   TH1D* hist_clusterSize_RPCTwinMux_after;
   TH2D* hist_clusterSize_bx;
+  TH2D* hist_clusterSize_bx_after;
 
   // Create a vector to store the region of each hit.
   std::vector<int> region_v;
@@ -483,13 +484,31 @@ for (auto chamber = m_outrpcDigis.begin(); chamber != m_outrpcDigis.end(); ++cha
   }
 }
 
-// Draw the scatter plot of cluster_size vs bx.
+// Draw the scatter plot of cluster_size vs bx before cleaning.
 for(auto cS_bx : clusterSize_bx) {
   if(cS_bx.first == 0) continue;
   for(int BX : cS_bx.second){
     hist_clusterSize_bx->Fill(cS_bx.first, BX);
   }
 }
+
+// Draw the scatter plot of cluster_size vs bx after cleaning.
+for(auto chamber = m_outrpcDigis->begin(); chamber != m_outrpcDigis->end(); ++chamber) {
+  RPCDetId rpcDetId = (*chamber).first;
+  for(auto digi = (*chamber).second.first; digi != (*chamber).second.second; ++digi) {
+    // Store the digi info in tmp.
+    RPCHitCleaner::detId_Ext tmp{rpcDetId, digi->bx(), digi->strip()};
+    // Get the cluster_id of the digi.
+    int cluster_id = hits[tmp];
+    // Get the size of the cluster.
+    int clu_size = vcluster_size[cluster_id];
+    // Get the bx of the cluster
+    int clu_bx = digi->bx();
+    // Fill the histogram.
+    hist_clusterSize_bx_after->Fill(clu_size, clu_bx);
+  }
+}
+
 
 
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
@@ -514,6 +533,8 @@ void RPC2TMAna::beginJob() {
   hist_clusterSize_RPCTwinMux_before = fs->make<TH1D>("clusterSize_RPCTwinMux_before", "clusterSize_RPCTwinMux_before", 60, -0.5, 59.5);
   hist_clusterSize_RPCTwinMux_after = fs->make<TH1D>("clusterSize_RPCTwinMux_after", "clusterSize_RPCTwinMux_after", 5, -0.5, 4.5);
   hist_clusterSize_bx = fs->make<TH2D>("clusterSize_bx", "clusterSize_bx", 60, -0.5, 59.5, 9, -4.5, 4.5);
+  hist_clusterSize_bx_after = fs->make<TH2D>("clusterSize_bx_after", "clusterSize_bx_after", 60, -0.5, 59.5, 9, -4.5, 4.5);
+
 
 
 }
